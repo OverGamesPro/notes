@@ -1,0 +1,25 @@
+.main > .workplace {
+    border: 3px solid black;
+    border-radius: 20px;
+    padding: 70px;
+    background: rgb(80, 66, 40);
+    width: 1200px;         /* фиксированная ширина рамки */
+    max-width: 80vw;      /* адаптивная ширина */
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top:100px;
+    gap:10px
+}
+
+.workplace-header {
+    width: 1258px;         /* такая же ширина, как у .workplace */
+    max-width: 80vw;
+    display: flex;  
+    justify-content: flex-end; /* кнопка уходит вправо */
+    
+}
+

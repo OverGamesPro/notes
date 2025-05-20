@@ -1,0 +1,27 @@
+body{
+    background-color: rgb(107, 87, 50);
+}
+
+button.add{
+    background-color:rgb(0, 255, 128);
+    border-radius:40px;
+    font-size: 50px;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    user-select: none;
+}
+
+button.delete{
+    background-color:rgb(228, 54, 10);
+    border-radius:10px;
+    width:110px;
+    height:50px;
+    cursor: pointer;
+    user-select: none;
+}
+
+button.delete.active {
+    background: #e74c3c;
+    color: #fff;
+}

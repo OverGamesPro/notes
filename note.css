@@ -1,0 +1,28 @@
+.row {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.cell {
+    width: 250px;
+    height: 150px;
+    background: #c2b280;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note {
+    width: 250px;
+    height: 120px;
+    background: #fffbe6;
+    border: 2px solid #bfae80;
+    border-radius: 8px;
+}
+
+.note.selected {
+    background: #ffb3b3;
+    border: 2px solid #e74c3c;
+}

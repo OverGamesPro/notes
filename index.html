@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="workplace.css">
+    <link rel="stylesheet" href="note.css">
+    <link rel="stylesheet" href="texholder.css">
+    
+    <title>Document</title>
+</head>
+<body>
+    <div class="main">   <!--панель отображения моих заметок-->
+        <div class="workplace-header">   
+            <button class="delete">delete</button>
+        </div>
+        <div class="workplace">
+           
+        </div>
+    </div>
+    <div class="modal hidden">   <!--это скрытое окно самой заметки-->
+        <div class="modal-content">
+            <button id="exit">x</button>
+            <input type="text" id="note-title" placeholder="Заголовок" />
+            <textarea id="note-content" placeholder="Содержание..."></textarea>
+            <button id="save-note">Сохранить</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
