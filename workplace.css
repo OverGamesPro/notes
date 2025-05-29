@@ -1,7 +1,8 @@
 .main > .workplace {
+    box-sizing: border-box;
     border: 3px solid black;
     border-radius: 20px;
-    padding: 70px;
+    padding: 4%;
     background: rgb(80, 66, 40);
     width: 1200px;         /* фиксированная ширина рамки */
     max-width: 80vw;      /* адаптивная ширина */

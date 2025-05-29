@@ -6,6 +6,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveBtn = document.getElementById('save-note');
     const exitBtn = document.getElementById('exit');
     const deleteBtn = document.querySelector('.delete');
+    const naxui = document.querySelector('.naxui')
+
+
+    naxui.addEventListener('click', () =>{
+       if(confirm('вы уверены что хотите удалить все заметки?')){
+        deleteAll();
+       }
+       
+    });
+    
+    function deleteAll(){
+        notesData = [];
+        render();
+    }
+
 
 
 

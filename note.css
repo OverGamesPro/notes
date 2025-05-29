@@ -5,8 +5,11 @@
 }
 
 .cell {
-    width: 250px;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 250px;
     height: 150px;
+    max-height: 150px;
     background: #c2b280;
     border-radius: 10px;
     display: flex;
@@ -15,8 +18,8 @@
 }
 
 .note {
-    width: 250px;
-    height: 120px;
+    width: 95%;
+    height: 90%;
     background: #fffbe6;
     border: 2px solid #bfae80;
     border-radius: 8px;
