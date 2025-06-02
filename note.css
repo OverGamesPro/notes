@@ -10,7 +10,7 @@
     max-width: 250px;
     height: 150px;
     max-height: 150px;
-    background: #c2b280;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -20,12 +20,21 @@
 .note {
     width: 95%;
     height: 90%;
-    background: #fffbe6;
-    border: 2px solid #bfae80;
+    background: #2d3748;
+    border: 2px solid #2d3748;
     border-radius: 8px;
+    color:#f9fafb;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
 }
 
 .note.selected {
-    background: #ffb3b3;
-    border: 2px solid #e74c3c;
+    background: #3b82f6;
+    border: 2px solid #234885;
 }
+
+ .cell-selected{
+    background: #234885;
+    transition: 0.7s;
+ }

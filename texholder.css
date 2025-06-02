@@ -15,8 +15,9 @@
   z-index: 1000;
 }
 
+
 .modal-content {
-  background: white;
+  background: #1e1e2f;
   padding: 20px;
   width: 100%;
   max-width: 1250px;
@@ -47,6 +48,7 @@
 #save-note{
   min-width: 200px;
   height: 50px;
+  background-color: #3b82f6;
 }
 
 #exit {
@@ -57,5 +59,6 @@
     max-width: 40px;
     height: 40px;
     border-radius: 15px;
+    background-color: #ef4444;
     
 }

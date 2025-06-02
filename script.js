@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveNotes() {
     localStorage.setItem("notesData", JSON.stringify(notesData));
     }
-
+    
     function render() {
        
         workplace.innerHTML = '';
@@ -96,21 +96,26 @@ document.addEventListener('DOMContentLoaded', () => {
                         noteDiv.style.cursor = 'pointer';
                         if (selectedNotes.has(currentIndex)) {
                             noteDiv.classList.add('selected');
+                            cellDiv.classList.add('cell-selected');
                         } else {
                             noteDiv.classList.remove('selected');
+                            cellDiv.classList.remove('cell-selected');
                         }
                         noteDiv.onclick = (e) => {
                             e.stopPropagation();
                             if (selectedNotes.has(currentIndex)) {
                                 selectedNotes.delete(currentIndex);
                                 noteDiv.classList.remove('selected');
+                                cellDiv.classList.remove('cell-selected');
                             } else {
                                 selectedNotes.add(currentIndex);
                                 noteDiv.classList.add('selected');
+                                cellDiv.classList.add('cell-selected');
                             }
                         };
                     } else {
                         noteDiv.classList.remove('selected');
+                        cellDiv.classList.remove('cell-selected');
                         noteDiv.onclick = () => {
                             if (!deleteMode) openModal(currentIndex);
                         };
