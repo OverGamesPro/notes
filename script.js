@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     naxui.addEventListener('click', () =>{
        if(confirm('вы уверены что хотите удалить все заметки?')){
         deleteAll();
+        
        }
        
     });
@@ -36,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addBtn.addEventListener('click', () => {
         notesData.push({ title: '', content: '' });
-        saveNotes();
         render();
     });
 
@@ -51,22 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedNotes.clear();
             deleteMode = false;
             deleteBtn.classList.remove('active');
-            saveNotes();
             render();
         }
     });
 
-    const savedNotes = localStorage.getItem("notesData");
-    if (savedNotes) {
-    notesData = JSON.parse(savedNotes);
-    } else {
-    notesData = [];
-    }
+    
 
     // Функция сохранения
-    function saveNotes() {
-    localStorage.setItem("notesData", JSON.stringify(notesData));
-    }
+   
     
     function render() {
        
@@ -153,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         modal.classList.add('hidden');
-        saveNotes();
         render();
     });
 
