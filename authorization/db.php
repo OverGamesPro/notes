@@ -12,3 +12,13 @@ $db->exec("CREATE TABLE IF NOT EXISTS users (
     email TEXT UNIQUE,
     password TEXT
 )");
+
+$db->exec("CREATE TABLE IF NOT EXISTS notes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    title TEXT,
+    content TEXT,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+)");
+
+

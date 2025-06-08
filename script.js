@@ -6,62 +6,84 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveBtn = document.getElementById('save-note');
     const exitBtn = document.getElementById('exit');
     const deleteBtn = document.querySelector('.delete');
-    const naxui = document.querySelector('.naxui')
-
-
-    naxui.addEventListener('click', () =>{
-       if(confirm('вы уверены что хотите удалить все заметки?')){
-        deleteAll();
-        
-       }
-       
-    });
-    
-    function deleteAll(){
-        notesData = [];
-        render();
-    }
-
-
-
-
-    // Кнопка add создаётся только в JS!
-    const addBtn = document.createElement('button');
-    addBtn.className = 'add';
-    addBtn.textContent = '+';
+    const naxui = document.querySelector('.naxui');
 
     let notesData = [];
     let currentEditingIndex = null;
     let deleteMode = false;
     let selectedNotes = new Set();
 
-    addBtn.addEventListener('click', () => {
-        notesData.push({ title: '', content: '' });
+    // Загрузка заметок с сервера
+    async function loadNotes() {
+        const res = await fetch('/authorization/notes_api.php');
+        notesData = await res.json();
         render();
-    });
+    }
 
-    deleteBtn.addEventListener('click', () => {
-        if (!deleteMode) {
-            deleteMode = true;
-            deleteBtn.classList.add('active');
-            render(); // <--- ВАЖНО: сразу перерисовать!
-        } else {
-            // Удаляем выделенные заметки
-            notesData = notesData.filter((_, idx) => !selectedNotes.has(idx));
-            selectedNotes.clear();
-            deleteMode = false;
-            deleteBtn.classList.remove('active');
-            render();
+    // Сохранение заметки (PUT или POST)
+    async function saveNote(note) {
+        await fetch('/authorization/notes_api.php', {
+            method: note.id ? 'PUT' : 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(note)
+        });
+        loadNotes();
+    }
+
+    // Удалить все заметки
+    naxui.addEventListener('click', () => {
+        if (confirm('вы уверены что хотите удалить все заметки?')) {
+            deleteAll();
         }
     });
 
-    
+    async function deleteAll() {
+        await fetch('/authorization/notes_api.php', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ all: true })
+        });
+        loadNotes();
+    }
 
-    // Функция сохранения
-   
-    
+    // Кнопка add создаётся только в JS!
+    const addBtn = document.createElement('button');
+    addBtn.className = 'add';
+    addBtn.textContent = '+';
+
+    addBtn.addEventListener('click', async () => {
+        await fetch('/authorization/notes_api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: '', content: '' })
+        });
+        loadNotes();
+    });
+
+    // Кнопка удаления (режим выделения и удаление)
+    deleteBtn.addEventListener('click', async () => {
+        if (!deleteMode) {
+            deleteMode = true;
+            deleteBtn.classList.add('active');
+            render();
+        } else {
+            // Удаляем выделенные заметки на сервере по их id
+            for (let noteId of selectedNotes) {
+                await fetch('/authorization/notes_api.php', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: noteId })
+                });
+            }
+            selectedNotes.clear();
+            deleteMode = false;
+            deleteBtn.classList.remove('active');
+            loadNotes();
+        }
+    });
+
+    // Основная функция рендера
     function render() {
-       
         workplace.innerHTML = '';
         let totalCells = notesData.length + 1;
         let rowsCount = Math.ceil(totalCells / 4);
@@ -70,23 +92,23 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < rowsCount; i++) {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'row';
-        for (let j = 0; j < 4; j++) {
-            const cellDiv = document.createElement('div');
-            cellDiv.className = 'cell';
+            for (let j = 0; j < 4; j++) {
+                const cellDiv = document.createElement('div');
+                cellDiv.className = 'cell';
 
                 if (cellIndex < notesData.length) {
+                    const note = notesData[cellIndex];
+                    const noteId = note.id;
                     const noteDiv = document.createElement('div');
                     noteDiv.className = 'note';
-                    noteDiv.innerText = notesData[cellIndex].title || 'Без названия';
+                    noteDiv.innerText = note.title || 'Без названия';
 
-                    const currentIndex = cellIndex;
-
-                    // Сброс обработчиков, чтобы не накапливались
+                    // Сброс обработчиков
                     noteDiv.onclick = null;
 
                     if (deleteMode) {
                         noteDiv.style.cursor = 'pointer';
-                        if (selectedNotes.has(currentIndex)) {
+                        if (selectedNotes.has(noteId)) {
                             noteDiv.classList.add('selected');
                             cellDiv.classList.add('cell-selected');
                         } else {
@@ -95,12 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         noteDiv.onclick = (e) => {
                             e.stopPropagation();
-                            if (selectedNotes.has(currentIndex)) {
-                                selectedNotes.delete(currentIndex);
+                            if (selectedNotes.has(noteId)) {
+                                selectedNotes.delete(noteId);
                                 noteDiv.classList.remove('selected');
                                 cellDiv.classList.remove('cell-selected');
                             } else {
-                                selectedNotes.add(currentIndex);
+                                selectedNotes.add(noteId);
                                 noteDiv.classList.add('selected');
                                 cellDiv.classList.add('cell-selected');
                             }
@@ -109,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         noteDiv.classList.remove('selected');
                         cellDiv.classList.remove('cell-selected');
                         noteDiv.onclick = () => {
-                            if (!deleteMode) openModal(currentIndex);
+                            if (!deleteMode) openModal(noteId);
                         };
                     }
 
@@ -124,28 +146,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             workplace.appendChild(rowDiv);
         }
-        
     }
 
-    function openModal(index) {
-        if (!notesData[index]) return;
-        currentEditingIndex = index;
-        titleInput.value = notesData[index].title || '';
-        contentInput.value = notesData[index].content || '';
-        modal.classList.remove('hidden');
+    // Открытие модального окна для редактирования
+    function openModal(id) {
+    const noteIndex = notesData.findIndex(note => note.id === id);
+    if (noteIndex === -1) return;
+    currentEditingIndex = noteIndex;
+    titleInput.value = notesData[noteIndex].title || '';
+    contentInput.value = notesData[noteIndex].content || '';
+    modal.classList.remove('hidden');
     }
 
-    saveBtn.addEventListener('click', () => {
+    // Сохранение изменений в заметке
+    saveBtn.addEventListener('click', async () => {
         const newTitle = titleInput.value.trim();
         const newContent = contentInput.value.trim();
 
         if (currentEditingIndex !== null && notesData[currentEditingIndex]) {
-            notesData[currentEditingIndex].title = newTitle;
-            notesData[currentEditingIndex].content = newContent;
+            const note = notesData[currentEditingIndex];
+            await fetch('/authorization/notes_api.php', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: note.id, title: newTitle, content: newContent })
+            });
         }
 
         modal.classList.add('hidden');
-        render();
+        loadNotes();
     });
 
     if (exitBtn) {
@@ -155,5 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    render();
+    // Загружаем заметки при старте
+    loadNotes();
 });

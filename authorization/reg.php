@@ -1,5 +1,7 @@
 <?php
 session_start();
+$message = $_SESSION['message'] ?? '';
+unset($_SESSION['message']);
 ?>
 <head>
     <meta charset="UTF-8">
@@ -9,7 +11,7 @@ session_start();
 </head>
 <body>
     <?php if (!empty($message)): ?>
-        <p style="color:white;"><?= htmlspecialchars($message) ?></p>
+        <p style="color:white;"><?= htmlspecialchars( $message) ?></p>
     <?php endif; ?>
 
     <div class="windowreg">

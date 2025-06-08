@@ -13,10 +13,10 @@ if (empty($_SESSION['username'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="workplace.css">
-    <link rel="stylesheet" href="note.css">
-    <link rel="stylesheet" href="texholder.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/workplace.css">
+    <link rel="stylesheet" href="/note.css">
+    <link rel="stylesheet" href="/texholder.css">
     
     <title>Document</title>
 </head>
@@ -36,6 +36,6 @@ if (empty($_SESSION['username'])) {
             <button id="save-note">Сохранить</button>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
 </body>
 </html>
